@@ -14,7 +14,7 @@ import torchvision.transforms as transforms
 import os
 import argparse
 
-from models import myresnet,mydensenet
+from models import resnet
 from utils import progress_bar 
 
 
@@ -52,8 +52,8 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 
 # Model
 print("Building Model...")
-# net = myresnet.ResNet18()
-net = mydensenet.DenseNet121()
+net = resnet.ResNet18()
+# net = mydensenet.DenseNet121()
 net = net.to(device)
 # if device == 'cuda':
 # 	net = torch.nn.DataParallel(net)
