@@ -1,2 +1,2 @@
 # ImplementCnn
-Realize the classic cnn architecture with Pytorch
+Implement the classic cnn architecture with Pytorch
