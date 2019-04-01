@@ -15,13 +15,13 @@ import torchvision.transforms as transforms
 import os
 import argparse
 
-from models import resnet
+from models import resnet, densenet, resnext
 from utils import progress_bar
 import matplotlib.pyplot as plt
 
 
 parser = argparse.ArgumentParser(description='Pytorch CIFAR10 Training')
-parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
+parser.add_argument('--lr', default=0.009, type=float, help='learning rate')
 parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
 args = parser.parse_args()
 
@@ -56,10 +56,12 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 print("Building Model...")
 net = resnet.ResNet18()
 # net = mydensenet.DenseNet121()
+# net = densenet.DenseNet121()
+net = resnext.ResNeXt29_2x64d()
 net = net.to(device)
 # if device == 'cuda':
-# 	net = torch.nn.DataParallel(net)
-# 	cudnn.benchmark = True
+#     net = torch.nn.DataParallel(net)
+#     cudnn.benchmark = True
 
 if args.resume:
     # Load checkpoint
@@ -132,7 +134,7 @@ def test(epoch):
 
         if not os.path.isdir('checkpoint'):
             os.mkdir('checkpoint')
-        torch.save(state, './checkpoint/ckpt.t7')
+        torch.save(state, './checkpoint/resnextckpt.t7')
         best_acc = acc
 
 # find the best lr
@@ -192,15 +194,18 @@ def find_lr(init_value=1e-8, final_value=10., beta=0.98):
     return log_lrs, losses
 
 
-# find best lr
-# find best lr
-# logs, losses = find_lr()
-# print(logs)
-# print(losses)
-# plt.plot(logs, losses)
-# plt.show()
-
-
-for epoch in range(start_epoch, start_epoch + 200):
-    train(epoch)
-    test(epoch)
+type = 0
+if type == 1:
+        # find best lr
+        # logs, losses = find_lr()
+        # print(logs)
+        # print(losses)
+    print("Now is finding best lr:")
+    logs, losses = find_lr()
+    plt.plot(logs, losses)
+    plt.show()
+else:
+    print("Now is training and testing:")
+    for epoch in range(start_epoch, start_epoch + 200):
+        train(epoch)
+        test(epoch)
