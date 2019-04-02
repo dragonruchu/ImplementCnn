@@ -15,7 +15,7 @@ import torchvision.transforms as transforms
 import os
 import argparse
 
-from models import resnet, densenet, resnext
+from models import resnet, densenet, resnext, senet, shuffle
 from utils import progress_bar
 import matplotlib.pyplot as plt
 
@@ -54,10 +54,12 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship'
 
 # Model
 print("Building Model...")
-net = resnet.ResNet18()
+# net = resnet.ResNet18()
 # net = mydensenet.DenseNet121()
 # net = densenet.DenseNet121()
-net = resnext.ResNeXt29_2x64d()
+# net = resnext.ResNeXt29_2x64d()
+# net = senet.SENet18()
+net = shuffle.ShuffleNeG2()
 net = net.to(device)
 # if device == 'cuda':
 #     net = torch.nn.DataParallel(net)
@@ -134,7 +136,7 @@ def test(epoch):
 
         if not os.path.isdir('checkpoint'):
             os.mkdir('checkpoint')
-        torch.save(state, './checkpoint/resnextckpt.t7')
+        torch.save(state, './checkpoint/senetckpt.t7')
         best_acc = acc
 
 # find the best lr
